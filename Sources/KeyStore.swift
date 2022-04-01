@@ -276,7 +276,7 @@ public final class KeyStore {
     }
 
     /// Generates a unique file name for an address.
-    func generateFileName(identifier: String, date: Date = Date(), timeZone: TimeZone = .current) -> String {
+    public func generateFileName(identifier: String, date: Date = Date(), timeZone: TimeZone = .current) -> String {
         // keyFileName implements the naming convention for keyfiles:
         // UTC--<created_at UTC ISO8601>-<address hex>
         return "UTC--\(filenameTimestamp(for: date, in: timeZone))--\(identifier)"
