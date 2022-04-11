@@ -97,7 +97,7 @@ public final class KeyStore {
                 throw EncryptError.invalidMnemonic
             }
             let bc = blockchain(coin: coin)
-            return try self.import(mnemonic: mnemonic, encryptPassword: newPassword, derivationPath: bc.derivationPath(at: 0))
+            return try self.import(mnemonic: mnemonic, encryptPassword: newPassword, derivationPaths: [bc.derivationPath(at: 0)])
         }
     }
 
@@ -127,7 +127,7 @@ public final class KeyStore {
     ///   - passphrase: wallet's password
     ///   - encryptPassword: password to use for encrypting
     /// - Returns: new account
-    public func `import`(mnemonic: String, passphrase: String = "", encryptPassword: String, derivationPath: DerivationPath) throws -> Wallet {
+    public func `import`(mnemonic: String, passphrase: String = "", encryptPassword: String, derivationPaths: [DerivationPath]) throws -> Wallet {
         if !Crypto.isValid(mnemonic: mnemonic) {
             throw Error.invalidMnemonic
         }
@@ -135,7 +135,7 @@ public final class KeyStore {
         let key = try KeystoreKey(password: encryptPassword, mnemonic: mnemonic, passphrase: passphrase)
         let url = makeAccountURL()
         let wallet = Wallet(keyURL: url, key: key)
-        let _ = try wallet.getAccounts(derivationPaths: [derivationPath], password: encryptPassword)
+        let _ = try wallet.getAccounts(derivationPaths: derivationPaths, password: encryptPassword)
 
         wallets.append(wallet)
 
